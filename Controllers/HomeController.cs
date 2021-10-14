@@ -20,23 +20,9 @@ namespace SistemaVenda.Controllers
             Repositorio = repositorio;
         }
 
-        public IActionResult Index()
-        {
-            Categoria categoria = new Categoria()
-            {
-                Descricao = "Teste"
-            };
+        public IActionResult Index() => View();
 
-            Repositorio.Categoria.Add(categoria);
-            Repositorio.SaveChanges();
-
-            return View();
-        }
-
-        public IActionResult Privacy()
-        {
-            return View();
-        }
+        public IActionResult Privacy() => View();
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
