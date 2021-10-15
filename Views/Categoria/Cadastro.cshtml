@@ -3,7 +3,7 @@
 @model SistemaVenda.Models.CategoriaViewModel;
 
 <form asp-controller="Categoria" asp-action="Cadastro" method="post">
-    <input type="hidden" asp-for="Codigo" value="@Model.Codigo" />
+    <input type="hidden" asp-for="Codigo" value="@Model.Codigo" id="codigo" />
 
     <div class="form-group">
         <div class="col-4">
@@ -16,6 +16,13 @@
     <button type="submit" class="btn btn-success">Salvar</button>
     <button type="button" class="btn btn-primary" onclick="Voltar()">Voltar</button>
     <button type="button" class="btn btn-light btn-light" onclick="Novo()">Limpar e Criar Novo</button>
-    <button type="button" class="btn btn-danger" onclick="Excluir(@Model.Codigo)">Excluir</button>
+    @if (Model.Codigo != null)
+    {
+        <button type="button" class="btn btn-danger" onclick="Excluir(@Model.Codigo)">Excluir</button>
+    }
+    else
+    {
+        @*<button type="button" class="btn btn-danger" onclick="Excluir(@Model.Codigo)">Excluir</button>*@
+    }
 </form>
 <script src="~/js/categoria.js"></script>

@@ -31,7 +31,7 @@ namespace SistemaVenda.Controllers
         {
             var viewModel = new CategoriaViewModel();
 
-            if(id != null) // Signigica que há um item cadastrado com este ID
+            if (id != null) // Signigica que há um item cadastrado com este ID
             {
                 // Settando o item enviado para o formulário para que o código explicitado seja mostrado sem erros
                 var item = Db.Categoria.Where(x => x.Codigo == id).FirstOrDefault();
@@ -45,7 +45,7 @@ namespace SistemaVenda.Controllers
         [HttpPost]
         public IActionResult Cadastro(CategoriaViewModel item)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 var objCategoria = new Categoria
                 {
@@ -53,7 +53,7 @@ namespace SistemaVenda.Controllers
                     Descricao = item.Descricao
                 };
 
-                if(objCategoria.Codigo != null)
+                if (objCategoria.Codigo != null)
                 {
                     Db.Entry(objCategoria).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
                 }
@@ -71,10 +71,15 @@ namespace SistemaVenda.Controllers
             }
         }
 
-        [HttpDelete]
-        public IActionResult Cadastro(int id)
+        public IActionResult Excluir(int? id)
         {
-
+            var objCategoria = Db.Categoria.Where(x => x.Codigo == id).FirstOrDefault();
+            if (id != null)
+            {
+                Db.Categoria.Remove(objCategoria);
+                Db.SaveChanges();
+            }
+            return View();
         }
     }
 }

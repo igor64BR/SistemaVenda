@@ -19,5 +19,11 @@ function Voltar() {
 }
 
 function Excluir(codigo) {
-    GoTo("Excluir/" + codigo)
+    let id = document.getElementById("codigo").value
+    if (id != null) {
+        GoTo("Excluir/" + codigo)
+    }
+    else {
+        alert("Não é um item")
+    }
 }
