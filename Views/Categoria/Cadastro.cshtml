@@ -1,1 +1,21 @@
-﻿
+﻿<h2>Criar Categoria</h2>
+<hr />
+@model SistemaVenda.Models.CategoriaViewModel;
+
+<form asp-controller="Categoria" asp-action="Cadastro" method="post">
+    <input type="hidden" asp-for="Codigo" value="@Model.Codigo" />
+
+    <div class="form-group">
+        <div class="col-4">
+            <label>Descrição</label>
+            <input asp-for="Descricao" type="text" value="@Model.Descricao" class="form-control" />
+            <span asp-validation-for="Descricao" class="text-dan"></span>
+        </div>
+    </div>
+    <br />
+    <button type="submit" class="btn btn-success">Salvar</button>
+    <button type="button" class="btn btn-primary" onclick="Voltar()">Voltar</button>
+    <button type="button" class="btn btn-light btn-light" onclick="Novo()">Limpar e Criar Novo</button>
+    <button type="button" class="btn btn-danger" onclick="Excluir(@Model.Codigo)">Excluir</button>
+</form>
+<script src="~/js/categoria.js"></script>
