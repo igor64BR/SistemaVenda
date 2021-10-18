@@ -22,7 +22,7 @@ namespace SistemaVenda.Controllers
         public IActionResult Index()
         {
             var Clientes = Db.Cliente.ToList();
-            Console.WriteLine(Clientes.Count());
+            Db.Dispose();
             return View(Clientes);
         }
         
@@ -33,12 +33,12 @@ namespace SistemaVenda.Controllers
 
             if (id != null)
             {
-                var item = Db.Cliente.Where(x => x.Codigo == id).FirstOrDefault();
-                viewModel.Codigo = item.Codigo;
-                viewModel.Nome = item.Nome;
-                viewModel.CNPJ_CPF= item.CNPJ_CPF;
-                viewModel.Email= item.Email;
-                viewModel.Celular = item.Celular;
+                var cliente = Db.Cliente.Where(x => x.Codigo == id).FirstOrDefault();
+                viewModel.Codigo = cliente.Codigo;
+                viewModel.Nome = cliente.Nome;
+                viewModel.CNPJ_CPF= cliente.CNPJ_CPF;
+                viewModel.Email= cliente.Email;
+                viewModel.Celular = cliente.Celular;
 
             }
 

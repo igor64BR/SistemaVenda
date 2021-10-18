@@ -74,11 +74,8 @@ namespace SistemaVenda.Controllers
         public IActionResult Excluir(int? id)
         {
             var objCategoria = Db.Categoria.Where(x => x.Codigo == id).FirstOrDefault();
-            if (id != null)
-            {
-                Db.Categoria.Remove(objCategoria);
-                Db.SaveChanges();
-            }
+            Db.Categoria.Remove(objCategoria);
+            Db.SaveChanges();
             return View();
         }
     }
