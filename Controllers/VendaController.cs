@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using SistemaVenda.DAL;
 using SistemaVenda.Entidades;
+using SistemaVenda.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -78,45 +80,44 @@ namespace SistemaVenda.Controllers
         public IActionResult Cadastro(int? id)
         {
             var viewModel = new VendaViewModel();
-            viewModel.ListaCategorias = GetCategoriaList();
+            viewModel.ListaClientes = GetClientesList();
+            viewModel.ListaProdutos = GetProdutoList();
 
 
             if (id != null)
             {
-                var produto = Db.Produto.Where(x => x.Codigo == id).FirstOrDefault();
-                viewModel.Codigo = produto.Codigo;
-                viewModel.Descricao = produto.Descricao;
-                viewModel.Quantidade = produto.Quantidade;
-                viewModel.Valor = produto.Valor;
-                viewModel.CodigoCategoria = produto.CodigoCategoria;
-
+                var cliente = Db.Venda.Where(x => x.Codigo == id).FirstOrDefault();
+                viewModel.Codigo = cliente.Codigo;
+                viewModel.Data = cliente.Data;
+                viewModel.CodigoCliente = cliente.CodigoCliente;
+                viewModel.Total = cliente.Total;
             }
 
             return View(viewModel);
         }
 
         [HttpPost]
-        public IActionResult Cadastro(ProdutoViewModel viewModel)
+        public IActionResult Cadastro(VendaViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
-                var categoria = Db.Categoria.Where(x => x.Codigo == viewModel.CodigoCategoria).FirstOrDefault();
-                var objProduto = new Produto
+                //var categoria = Db.Categoria.Where(x => x.Codigo == viewModel.CodigoCategoria).FirstOrDefault();
+                var objVenda = new Venda()
                 {
                     Codigo = viewModel.Codigo,
-                    Descricao = viewModel.Descricao,
-                    Quantidade = viewModel.Quantidade,
-                    Valor = (decimal)viewModel.Valor,
-                    CodigoCategoria = (int)viewModel.CodigoCategoria // (int) foi adicionado para automaticamente adicionar 0 ao código, caso este seja nulo. Pois o código de viewModel é anulável, enquanto o de produto não é
+                    Data = (DateTime)viewModel.Data,
+                    CodigoCliente = (int)viewModel.CodigoCliente,
+                    Total = viewModel.Total,
+                    Produtos = JsonConvert.DeserializeObject<ICollection<VendaProdutos>>(viewModel.JsonProdutos)
                 };
 
-                if (objProduto.Codigo != null)
+                if (objVenda.Codigo != null)
                 {
-                    Db.Entry(objProduto).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+                    Db.Entry(objVenda).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
                 }
                 else
                 {
-                    Db.Produto.Add(objProduto);
+                    Db.Venda.Add(objVenda);
                 }
                 Db.SaveChanges();
 
@@ -124,16 +125,17 @@ namespace SistemaVenda.Controllers
             }
             else
             {
-                viewModel.ListaCategorias = GetCategoriaList();
+                viewModel.ListaProdutos = GetProdutoList();
+                viewModel.ListaClientes = GetClientesList();
                 return View(viewModel);
             }
         }
 
         public IActionResult Excluir(int? id)
         {
-            var objToDelete = Db.Produto.Where(x => x.Codigo == id).FirstOrDefault();
+            var objToDelete = Db.Venda.Where(x => x.Codigo == id).FirstOrDefault();
 
-            Db.Produto.Remove(objToDelete);
+            Db.Venda.Remove(objToDelete);
             Db.SaveChanges();
 
             return View();
