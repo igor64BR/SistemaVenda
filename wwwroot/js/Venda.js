@@ -2,7 +2,7 @@
     window.location = window.origin + "/Venda/" + request
 }
 
-function CadastrarProduto() {
+function RegistrarVenda() {
     GoTo("Cadastro");
 }
 
