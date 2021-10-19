@@ -1,1 +1,38 @@
-﻿
+﻿@{
+    ViewData["Title"] = "Produtos";
+}
+@model List<SistemaVenda.Entidades.Produto>
+
+    <div style="color:#ffffff">
+        <h1>Produtos:</h1>
+
+        <table class="table table-bordered">
+            <thead>
+                <tr style="background-color:#00b9ff">
+                    <th>Codigo</th>
+                    <th>Descrição</th>
+                    <th>Quantidade</th>
+                    <th>Valor</th>
+                    <th>Categoria</th>
+                    <th>Código da Categoria</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr onclick="Editar(@item.Codigo)" style="cursor: pointer; background-color:#ffffff">
+                        <td>@item.Codigo</td>
+                        <td>@item.Descricao</td>
+                        <td>@item.Quantidade</td>
+                        <td>@item.Valor</td>
+                        <td>@item.Categoria.Descricao</td>
+                        <td>@item.CodigoCategoria</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <br />
+        <button type="button" class="btn btn-primary btn-block" onclick="CadastrarProduto()">Criar Produto</button>
+    </div>
+
+    <script src="~/js/Produto.js"></script>

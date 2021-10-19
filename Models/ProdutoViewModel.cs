@@ -17,12 +17,12 @@ namespace SistemaVenda.Models
         public string Descricao { get; set; }
 
         [Required(ErrorMessage = "Insira a quandidade de peso em estoque")]
-        public float Quantidade { get; set; }
+        public double Quantidade { get; set; }
 
         [Required(ErrorMessage = "Insira o valor unitário do produto")]
-        public decimal Valor { get; set; }
+        public decimal? Valor { get; set; }
 
-        [Required(ErrorMessage = "Informe a categoria do produto"]
+        [Required(ErrorMessage = "Informe a categoria do produto")]
         public int? CodigoCategoria { get; set; }
 
         public IEnumerable<SelectListItem> ListaCategorias { get; set; }

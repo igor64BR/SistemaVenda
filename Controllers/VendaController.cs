@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SistemaVenda.DAL;
 using SistemaVenda.Entidades;
-using SistemaVenda.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,24 +10,23 @@ using System.Threading.Tasks;
 
 namespace SistemaVenda.Controllers
 {
-    public class ProdutoController : Controller
+    public class VendaController : Controller
     {
-
         protected ApplicationDbContext Db;
 
-        public ProdutoController(ApplicationDbContext db)
+        public VendaController(ApplicationDbContext db)
         {
             Db = db;
         }
 
         public IActionResult Index()
         {
-            List<Produto> produto = Db.Produto.Include(x => x.Categoria).ToList();
+            List<Venda> vendas = Db.Venda.ToList();
             Db.Dispose();
-            return View(produto);
+            return View(vendas);
         }
 
-        private IEnumerable<SelectListItem> GetCategoriaList()
+        private IEnumerable<SelectListItem> GetProdutoList()
         {
             List<SelectListItem> list = new List<SelectListItem>();
             list.Add(
@@ -39,8 +37,8 @@ namespace SistemaVenda.Controllers
                 }
                 );
 
-            var categorias = Db.Categoria.ToList();
-            foreach (var item in categorias)
+            var produtos = Db.Produto.ToList();
+            foreach (var item in produtos)
             {
                 list.Add(new SelectListItem()
                 {
@@ -52,10 +50,34 @@ namespace SistemaVenda.Controllers
             return list;
         }
 
+        private IEnumerable<SelectListItem> GetClientesList()
+        {
+            List<SelectListItem> list = new List<SelectListItem>();
+            list.Add(
+                new SelectListItem()
+                {
+                    Value = string.Empty,
+                    Text = string.Empty
+                }
+                );
+
+            var clientes = Db.Cliente.ToList();
+            foreach (var item in clientes)
+            {
+                list.Add(new SelectListItem()
+                {
+                    Value = item.Codigo.ToString(),
+                    Text = item.Nome.ToString()
+                }
+                    );
+            }
+            return list;
+        }
+
         [HttpGet]
         public IActionResult Cadastro(int? id)
         {
-            var viewModel = new ProdutoViewModel();
+            var viewModel = new VendaViewModel();
             viewModel.ListaCategorias = GetCategoriaList();
 
 
