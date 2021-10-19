@@ -71,3 +71,24 @@ body {
     line-height: 60px; /* Vertically center the text there */
     background-color: #ffffff;
 }
+
+tr {
+    color: white;
+}
+
+td {
+    color:black;
+    background-color:white;
+}
+
+label {
+    color:white;
+}
+
+h2 {
+    color:white;
+}
+
+h1 {
+    color:white;
+}

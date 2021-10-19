@@ -1,1 +1,75 @@
-﻿
+﻿@{
+    ViewData["Title"] = "Venda";
+}
+@model SistemaVenda.Models.VendaViewModel;
+
+<h2>Registrar Nova Venda</h2>
+<hr />
+
+<form asp-controller="Venda" asp-action="Cadastro" method="post">
+    <input type="hidden" asp-for="Codigo" value="@Model.Codigo" id="codigo" />
+
+    <div class="form-group">
+        <div class="col-4">
+            <label>Data</label>
+            <input asp-for="Data" type="date" value="@Model.Data" class="form-control" />
+            <span asp-validation-for="Data" class="text-danger"></span><br />
+
+            <label>Cliente</label>
+            <input asp-for="ListaClientes" type="hidden" value="@Model.ListaClientes" class="form-control" />
+            <select asp-for="CodigoCliente" class="form-control input-group-lg" asp-items="@Model.ListaClientes"></select>
+            <span asp-validation-for="CodigoCliente" class="text-danger"></span><br />
+
+            <label>Produtos</label>
+            <input asp-for="ListaProdutos" type="hidden" value="@Model.ListaProdutos" class="form-control" />
+            <select class="form-control input-group-lg" asp-items="@Model.ListaProdutos" id="cboProduto" onchange="BuscarPrecoProduto()"></select>
+
+            <label>Preço unitário</label>
+            <input id="txtPrecoUnitario" type="number" class="form-control" disabled />
+
+            <label>Quantidade</label>
+            <input id="txtQtde" type="number" class="form-control input-group-lg" onchange="CalcSubTotal()" />
+
+            <label>Subtotal</label>
+            <input type="number" id="txtSubTotal" disabled="disabled" class="form-control" />
+
+            <button type="button" class="btn btn-info" onclick="AddProduto()">Adicionar Produto</button>
+        </div>
+        <br /><br />
+        <div class="col-md-12">
+            <table class="table table-bordered">
+                <thead>
+                    <tr style="background-color:#009aff">
+                        <th>Produto</th>
+                        <th>Quantidade</th>
+                        <th>Preço Único</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody id="gridProdutos" class="tbody-light"></tbody>
+            </table>
+        </div>
+
+        <div class="form-group">
+            <label>Total</label>
+            <div class="col-md-3">
+                <input type="text" id="txtTotal" value="@Model.Total" class="form-control" disabled />
+                <span asp-validation-for="Total" class="text-danger"></span>
+            </div>
+        </div>
+
+        <textarea asp-for="JsonProdutos" id="txtJsonProdutos" class="col"></textarea>
+
+    </div>
+    <br />
+    <button type="submit" class="btn btn-success">Salvar</button>
+    <button type="button" class="btn btn-primary" onclick="Redirect()">Voltar</button>
+    <button type="button" class="btn btn-light btn-light" onclick="Novo()">Limpar e Criar Novo</button>
+    @if (Model.Codigo != null)
+    {
+        <button type="button" class="btn btn-danger" onclick="Excluir(@Model.Codigo)">Excluir</button>
+    }
+</form>
+
+
+<script src="~/js/Venda.js"></script>

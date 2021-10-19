@@ -140,5 +140,11 @@ namespace SistemaVenda.Controllers
 
             return View();
         }
+
+        [HttpGet("LerValorProduto/{CodigoProduto}")]
+        public decimal LerValorProduto(int CodigoProduto)
+        {
+            return Db.Produto.Where(x => x.Codigo == CodigoProduto).Select(y => y.Valor).FirstOrDefault();
+        }
     }
 }
