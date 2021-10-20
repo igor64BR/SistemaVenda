@@ -13,10 +13,12 @@ namespace SistemaVenda.Controllers
     public class LoginController : Controller
     {
         protected ApplicationDbContext Db;
+        protected IHttpContextAccessor HttpCA;
 
-        public LoginController(ApplicationDbContext db)
+        public LoginController(ApplicationDbContext db, IHttpContextAccessor httpContext)
         {
             Db = db;
+            HttpCA = httpContext;
         }
 
 
@@ -37,11 +39,16 @@ namespace SistemaVenda.Controllers
 
                 if (user == null)
                 {
+
                     ViewData["ErroLogin"] = "Email ou senha não cadastrados";
                     return View(viewModel);
                 }
                 else
                 {
+                    HttpCA.HttpContext.Session.SetString(Secao.NOME_USUARIO, user.Nome);
+                    HttpCA.HttpContext.Session.SetString(Secao.EMAIL_USUARIO, user.Email);
+                    HttpCA.HttpContext.Session.SetInt32(Secao.CODIGO_USUARIO, (int)user.Codigo);
+                    HttpCA.HttpContext.Session.SetInt32(Secao.LOGADO, 1);
                     return RedirectToAction(actionName: "Index", controllerName: "Home");
                 }
             }
