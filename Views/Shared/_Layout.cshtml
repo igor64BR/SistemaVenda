@@ -1,4 +1,23 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Http;
+@using SistemaVenda;
+@inject IHttpContextAccessor httpCA;
+
+@{
+    int logado = 0;
+    string user = string.Empty;
+    try
+    {
+        logado = (int)httpCA.HttpContext.Session.GetInt32(SistemaVenda.Helpers.Secao.LOGADO);
+        user = httpCA.HttpContext.Session.GetString(SistemaVenda.Helpers.Secao.NOME_USUARIO);
+    }
+    catch
+    {
+        httpCA.HttpContext.Response.Redirect("/Login");
+    }
+
+}
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -11,7 +30,7 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"><img src="~/img/A_logo.png" width="21" height="25"/> &nbsp; SistemaVenda</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"><img src="~/img/A_logo.png" width="21" height="25" /> &nbsp; SistemaVenda</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -24,10 +43,12 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
-                        @*<li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Categoria" asp-action="Index">Categories</a>
-                        </li>*@
                     </ul>
+                </div>
+                <div>
+                    <span style="color:black" class="navbar-brand">Olá @user!</span>
+                    &nbsp;
+                    <button class="btn btn-danger" onclick="Logout()">Sair</button>
                 </div>
             </div>
         </nav>
@@ -47,5 +68,11 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @RenderSection("Scripts", required: false)
+
+    <script>
+        function Logout() {
+            window.location = window.origin + "/Login/Index/0"
+        }
+    </script>
 </body>
 </html>

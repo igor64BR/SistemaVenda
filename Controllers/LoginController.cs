@@ -23,8 +23,15 @@ namespace SistemaVenda.Controllers
 
 
         // GET: LoginController
-        public ActionResult Index()
+        public ActionResult Index(int? id)
         {
+            if (id != null)
+            {
+                if (id == 0)
+                {
+                    HttpCA.HttpContext.Session.Clear();
+                }
+            }
             return View();
         }
 
